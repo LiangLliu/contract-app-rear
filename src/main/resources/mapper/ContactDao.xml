@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.edwin.contract.dao.ContactDao">
+
+    <resultMap type="pers.edwin.contract.entity.Contact" id="ContactMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="typeId" column="type_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="partyA" column="party_a" jdbcType="VARCHAR"/>
+        <result property="partyAUrl" column="party_a_url" jdbcType="VARCHAR"/>
+        <result property="partyADate" column="party_a_date" jdbcType="OTHER"/>
+        <result property="partyB" column="party_b" jdbcType="VARCHAR"/>
+        <result property="partyBUrl" column="party_b_url" jdbcType="VARCHAR"/>
+        <result property="partyBDate" column="party_b_date" jdbcType="OTHER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ContactMap">
+        select
+          id, type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date, create_time, status
+        from contract.contact
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ContactMap">
+        select
+          id, type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date, create_time, status
+        from contract.contact
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ContactMap">
+        select
+          id, type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date, create_time, status
+        from contract.contact
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="partyA != null and partyA != ''">
+                and party_a = #{partyA}
+            </if>
+            <if test="partyAUrl != null and partyAUrl != ''">
+                and party_a_url = #{partyAUrl}
+            </if>
+            <if test="partyADate != null">
+                and party_a_date = #{partyADate}
+            </if>
+            <if test="partyB != null and partyB != ''">
+                and party_b = #{partyB}
+            </if>
+            <if test="partyBUrl != null and partyBUrl != ''">
+                and party_b_url = #{partyBUrl}
+            </if>
+            <if test="partyBDate != null">
+                and party_b_date = #{partyBDate}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into contract.contact(type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date, create_time, status)
+        values (#{typeId}, #{title}, #{content}, #{partyA}, #{partyAUrl}, #{partyADate}, #{partyB}, #{partyBUrl}, #{partyBDate}, #{createTime}, #{status})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update contract.contact
+        <set>
+            <if test="typeId != null">
+                type_id = #{typeId},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="partyA != null and partyA != ''">
+                party_a = #{partyA},
+            </if>
+            <if test="partyAUrl != null and partyAUrl != ''">
+                party_a_url = #{partyAUrl},
+            </if>
+            <if test="partyADate != null">
+                party_a_date = #{partyADate},
+            </if>
+            <if test="partyB != null and partyB != ''">
+                party_b = #{partyB},
+            </if>
+            <if test="partyBUrl != null and partyBUrl != ''">
+                party_b_url = #{partyBUrl},
+            </if>
+            <if test="partyBDate != null">
+                party_b_date = #{partyBDate},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from contract.contact where id = #{id}
+    </delete>
+
+</mapper>
