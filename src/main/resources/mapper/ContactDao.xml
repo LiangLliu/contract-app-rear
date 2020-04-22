@@ -17,6 +17,97 @@
         <result property="status" column="status" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        from contract.contact
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="partyA != null and partyA != ''">
+                and party_a = #{partyA}
+            </if>
+            <if test="partyAUrl != null and partyAUrl != ''">
+                and party_a_url = #{partyAUrl}
+            </if>
+            <if test="partyADate != null">
+                and party_a_date = #{partyADate}
+            </if>
+            <if test="partyB != null and partyB != ''">
+                and party_b = #{partyB}
+            </if>
+            <if test="partyBUrl != null and partyBUrl != ''">
+                and party_b_url = #{partyBUrl}
+            </if>
+            <if test="partyBDate != null">
+                and party_b_date = #{partyBDate}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryPage" resultMap="ContactMap">
+        select
+        id, type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date,
+        create_time, status
+        from contract.contact
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="partyA != null and partyA != ''">
+                and party_a = #{partyA}
+            </if>
+            <if test="partyAUrl != null and partyAUrl != ''">
+                and party_a_url = #{partyAUrl}
+            </if>
+            <if test="partyADate != null">
+                and party_a_date = #{partyADate}
+            </if>
+            <if test="partyB != null and partyB != ''">
+                and party_b = #{partyB}
+            </if>
+            <if test="partyBUrl != null and partyBUrl != ''">
+                and party_b_url = #{partyBUrl}
+            </if>
+            <if test="partyBDate != null">
+                and party_b_date = #{partyBDate}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ContactMap">
         select
@@ -36,7 +127,8 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="ContactMap">
         select
-          id, type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date, create_time, status
+        id, type_id, title, content, party_a, party_a_url, party_a_date, party_b, party_b_url, party_b_date,
+        create_time, status
         from contract.contact
         <where>
             <if test="id != null">

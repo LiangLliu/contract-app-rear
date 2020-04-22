@@ -1,6 +1,8 @@
 package pers.edwin.contract.service;
 
 import pers.edwin.contract.entity.Contact;
+import pers.edwin.contract.response.PageResponse;
+
 import java.util.List;
 
 /**
@@ -52,4 +54,5 @@ public interface ContactService {
      */
     boolean deleteById(Integer id);
 
+    PageResponse<Contact> queryAllPage(Integer employeeId, Integer page, Integer size);
 }

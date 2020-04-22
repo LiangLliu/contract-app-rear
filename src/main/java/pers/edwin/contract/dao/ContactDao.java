@@ -2,6 +2,8 @@ package pers.edwin.contract.dao;
 
 import pers.edwin.contract.entity.Contact;
 import org.apache.ibatis.annotations.Param;
+import pers.edwin.contract.entity.vo.PageContract;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,8 @@ import java.util.List;
  * @since 2020-04-19 17:27:14
  */
 public interface ContactDao {
+
+    List<Contact> queryPage(PageContract pageContract);
 
     /**
      * 通过ID查询单条数据
@@ -24,7 +28,7 @@ public interface ContactDao {
      * 查询指定行数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     List<Contact> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
@@ -62,4 +66,5 @@ public interface ContactDao {
      */
     int deleteById(Integer id);
 
+    Integer count(Contact contact);
 }
