@@ -97,8 +97,8 @@ public class ContactServiceImpl implements ContactService {
 
         return PageResponse.<Contact>builder()
                 .count(pageParryA.getCount() + pageParryB.getCount())
-                .size(pageParryA.getSize() + pageParryB.getSize())
-                .page(pageParryA.getPage() + pageParryB.getPage())
+                .size(pageParryA.getList().size() + pageParryA.getList().size())
+                .page(page)
                 .list(Stream.of(pageParryA.getList(), pageParryB.getList())
                         .flatMap(Collection::stream).distinct()
                         .sorted(Comparator.comparing(Contact::getCreateTime).reversed())

@@ -22,7 +22,7 @@ public class ContractConverter {
                 .partyA(createContactRequest.getPartyA())
                 .partyAUrl(createContactRequest.getPartyAUrl())
                 .partyB(createContactRequest.getPartyB())
-                .status(ContractStatusEnum.CREATE.name())
+                .status(ContractStatusEnum.UNSIGNED.name())
                 .partyADate(now)
                 .createTime(now)
                 .build();
