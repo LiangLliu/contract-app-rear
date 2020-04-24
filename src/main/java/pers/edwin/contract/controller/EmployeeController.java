@@ -4,24 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import pers.edwin.contract.converter.CompanyConverter;
-import pers.edwin.contract.dto.NameListDto;
+import org.springframework.web.bind.annotation.*;
 import pers.edwin.contract.dto.SearchDto;
 import pers.edwin.contract.entity.Company;
 import pers.edwin.contract.entity.Employee;
-import pers.edwin.contract.request.CompanyRequest;
 import pers.edwin.contract.request.EmployeeRequest;
 import pers.edwin.contract.request.LoginRequest;
 import pers.edwin.contract.response.EmployeeResponse;
 import pers.edwin.contract.service.CompanyService;
 import pers.edwin.contract.service.EmployeeService;
-import org.springframework.web.bind.annotation.*;
 import pers.edwin.contract.util.ResultUtil;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * (Employee)表控制层

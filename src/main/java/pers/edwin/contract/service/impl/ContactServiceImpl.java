@@ -4,6 +4,8 @@ import org.springframework.beans.BeanUtils;
 import pers.edwin.contract.entity.Contact;
 import pers.edwin.contract.dao.ContactDao;
 import pers.edwin.contract.entity.vo.PageContract;
+import pers.edwin.contract.enums.ContractStatusEnum;
+import pers.edwin.contract.enums.TypeEnum;
 import pers.edwin.contract.response.PageResponse;
 import pers.edwin.contract.service.ContactService;
 import org.springframework.stereotype.Service;
@@ -85,26 +87,100 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public PageResponse<Contact> queryAllPage(Integer employeeId, Integer page, Integer size) {
+    public PageResponse<Contact> queryPersonalAllPage(Integer employeeId, Integer page, Integer size) {
 
 
         PageResponse<Contact> pageParryA = queryPage(Contact.builder()
                 .partyA(String.valueOf(employeeId))
+                .typeId(TypeEnum.PERSONAL_CONTRACT.getId())
                 .build(), page, size);
         PageResponse<Contact> pageParryB = queryPage(Contact.builder()
                 .partyB(String.valueOf(employeeId))
+                .typeId(TypeEnum.EMPLOYEE_CONTRACT.getId())
                 .build(), page, size);
+        return mergePage(pageParryA, pageParryB, page, size);
+    }
 
+    @Override
+    public PageResponse<Contact> queryPersonalCreate(Integer employeeId, ContractStatusEnum status, Integer page, Integer size) {
+        Contact contact = Contact.builder()
+                .status(status.name())
+                .typeId(TypeEnum.PERSONAL_CONTRACT.getId())
+                .partyA(String.valueOf(employeeId)).build();
+        return queryPage(contact, page, size);
+    }
+
+    @Override
+    public PageResponse<Contact> queryPersonalCondition(Integer employeeId, ContractStatusEnum status, Integer page, Integer size) {
+        PageResponse<Contact> pageParryA = queryPage(Contact.builder()
+                .partyB(String.valueOf(employeeId))
+                .status(status.name())
+                .typeId(TypeEnum.PERSONAL_CONTRACT.getId())
+                .build(), page, size);
+        PageResponse<Contact> pageParryB = queryPage(Contact.builder()
+                .status(status.name())
+                .partyB(String.valueOf(employeeId))
+                .typeId(TypeEnum.EMPLOYEE_CONTRACT.getId())
+                .build(), page, size);
+        return mergePage(pageParryA, pageParryB, page, size);
+    }
+
+    @Override
+    public PageResponse<Contact> queryBusinessAllPage(Integer companyId, Integer page, Integer size) {
+        PageResponse<Contact> pageParryA = queryPage(Contact.builder()
+                .partyA(String.valueOf(companyId))
+                .typeId(TypeEnum.EMPLOYEE_CONTRACT.getId())
+                .build(), page, size);
+        PageResponse<Contact> pageParryB = queryPage(Contact.builder()
+                .partyA(String.valueOf(companyId))
+                .typeId(TypeEnum.BUSINESS_CONTRACT.getId())
+                .build(), page, size);
+        PageResponse<Contact> pageParryC = queryPage(Contact.builder()
+                .partyB(String.valueOf(companyId))
+                .typeId(TypeEnum.BUSINESS_CONTRACT.getId())
+                .build(), page, size);
+        PageResponse<Contact> mergePageA = mergePage(pageParryA, pageParryB, page, size);
+        return mergePage(mergePageA, pageParryC, page, size);
+    }
+
+    @Override
+    public PageResponse<Contact> queryBusinessCondition(Integer companyId, ContractStatusEnum statusEnum, Integer page, Integer size) {
+        Contact contact = Contact.builder()
+                .status(statusEnum.name())
+                .typeId(TypeEnum.BUSINESS_CONTRACT.getId())
+                .partyB(String.valueOf(companyId)).build();
+        return queryPage(contact, page, size);
+    }
+
+    @Override
+    public PageResponse<Contact> queryBusinessCreate(Integer companyId, Integer page, Integer size) {
+        PageResponse<Contact> pageParryA = queryPage(Contact.builder()
+                .partyA(String.valueOf(companyId))
+                .typeId(TypeEnum.EMPLOYEE_CONTRACT.getId())
+                .status(ContractStatusEnum.CREATE.name())
+                .build(), page, size);
+        PageResponse<Contact> pageParryB = queryPage(Contact.builder()
+                .partyA(String.valueOf(companyId))
+                .typeId(TypeEnum.BUSINESS_CONTRACT.getId())
+                .status(ContractStatusEnum.CREATE.name())
+                .build(), page, size);
+        return mergePage(pageParryA, pageParryB, page, size);
+    }
+
+
+    private PageResponse<Contact> mergePage(PageResponse<Contact> pageA, PageResponse<Contact> pageB, Integer page, Integer size) {
+        int sizeList = pageA.getList().size() + pageB.getList().size();
         return PageResponse.<Contact>builder()
-                .count(pageParryA.getCount() + pageParryB.getCount())
-                .size(pageParryA.getList().size() + pageParryA.getList().size())
+                .count(pageA.getCount() + pageB.getCount())
+                .size(sizeList > size ? sizeList : size)
                 .page(page)
-                .list(Stream.of(pageParryA.getList(), pageParryB.getList())
+                .list(Stream.of(pageA.getList(), pageB.getList())
                         .flatMap(Collection::stream).distinct()
                         .sorted(Comparator.comparing(Contact::getCreateTime).reversed())
                         .collect(Collectors.toList()))
                 .build();
     }
+
 
     private PageResponse<Contact> queryPage(Contact contact, Integer page, Integer size) {
 

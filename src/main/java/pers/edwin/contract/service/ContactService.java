@@ -1,6 +1,7 @@
 package pers.edwin.contract.service;
 
 import pers.edwin.contract.entity.Contact;
+import pers.edwin.contract.enums.ContractStatusEnum;
 import pers.edwin.contract.response.PageResponse;
 
 import java.util.List;
@@ -54,5 +55,15 @@ public interface ContactService {
      */
     boolean deleteById(Integer id);
 
-    PageResponse<Contact> queryAllPage(Integer employeeId, Integer page, Integer size);
+    PageResponse<Contact> queryPersonalAllPage(Integer employeeId, Integer page, Integer size);
+
+    PageResponse<Contact> queryPersonalCreate(Integer employeeId, ContractStatusEnum status, Integer page, Integer size);
+
+    PageResponse<Contact> queryPersonalCondition(Integer employeeId, ContractStatusEnum status, Integer page, Integer size);
+
+    PageResponse<Contact> queryBusinessAllPage(Integer companyId, Integer page, Integer size);
+
+    PageResponse<Contact> queryBusinessCondition(Integer companyId, ContractStatusEnum unsigned, Integer page, Integer size);
+
+    PageResponse<Contact> queryBusinessCreate(Integer companyId, Integer page, Integer size);
 }

@@ -18,13 +18,12 @@ import javax.annotation.Resource;
 
 /**
  * @Author Haoyang Yin
- * Create Data: 2020/4/22 23:39
+ * Create Data: 2020/4/24 23:58
  */
 @Slf4j
 @RestController
-@RequestMapping("/personal")
-public class PersonalController {
-
+@RequestMapping("/business")
+public class BusinessController {
     @Resource
     private ContactService contactService;
 
@@ -33,12 +32,12 @@ public class PersonalController {
      *
      * @return 评论列表
      */
-    @GetMapping("/{employeeId}/{page}/{size}")
-    public ResponseEntity all(@PathVariable Integer employeeId,
+    @GetMapping("/{companyId}/{page}/{size}")
+    public ResponseEntity all(@PathVariable Integer companyId,
                               @PathVariable Integer page,
                               @PathVariable Integer size) {
 
-        PageResponse<Contact> contactPageResponse = contactService.queryPersonalAllPage(employeeId, page, size);
+        PageResponse<Contact> contactPageResponse = contactService.queryBusinessAllPage(companyId, page, size);
 
         PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
         return ResultUtil.success(HttpStatus.OK, pageResponse);
@@ -49,26 +48,26 @@ public class PersonalController {
      *
      * @return 评论列表
      */
-    @GetMapping("/create/{employeeId}/{page}/{size}")
-    public ResponseEntity create(@PathVariable Integer employeeId,
+    @GetMapping("/create/{companyId}/{page}/{size}")
+    public ResponseEntity create(@PathVariable Integer companyId,
                                  @PathVariable Integer page,
                                  @PathVariable Integer size) {
 
-        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCreate(employeeId, ContractStatusEnum.CREATE, page, size);
+        PageResponse<Contact> contactPageResponse = contactService.queryBusinessCreate(companyId, page, size);
 
         PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
         return ResultUtil.success(HttpStatus.OK, pageResponse);
     }
 
     /**
-     * 待签的
+     * 待签的,只涉及商业合同
      */
-    @GetMapping("/unsigned/{employeeId}/{page}/{size}")
-    public ResponseEntity unsigned(@PathVariable Integer employeeId,
+    @GetMapping("/unsigned/{companyId}/{page}/{size}")
+    public ResponseEntity unsigned(@PathVariable Integer companyId,
                                    @PathVariable Integer page,
                                    @PathVariable Integer size) {
 
-        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCondition(employeeId, ContractStatusEnum.UNSIGNED, page, size);
+        PageResponse<Contact> contactPageResponse = contactService.queryBusinessCondition(companyId, ContractStatusEnum.UNSIGNED, page, size);
 
         PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
         return ResultUtil.success(HttpStatus.OK, pageResponse);
@@ -77,12 +76,12 @@ public class PersonalController {
     /**
      * 已经签署
      */
-    @GetMapping("/complete/{employeeId}/{page}/{size}")
-    public ResponseEntity complete(@PathVariable Integer employeeId,
+    @GetMapping("/complete/{companyId}/{page}/{size}")
+    public ResponseEntity complete(@PathVariable Integer companyId,
                                    @PathVariable Integer page,
                                    @PathVariable Integer size) {
 
-        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCondition(employeeId, ContractStatusEnum.COMPLETE, page, size);
+        PageResponse<Contact> contactPageResponse = contactService.queryBusinessCondition(companyId, ContractStatusEnum.COMPLETE, page, size);
 
         PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
         return ResultUtil.success(HttpStatus.OK, pageResponse);
@@ -91,11 +90,11 @@ public class PersonalController {
     /**
      * 作废合同
      */
-    @GetMapping("/invalid/{employeeId}/{page}/{size}")
-    public ResponseEntity invalid(@PathVariable Integer employeeId,
+    @GetMapping("/invalid/{companyId}/{page}/{size}")
+    public ResponseEntity invalid(@PathVariable Integer companyId,
                                   @PathVariable Integer page,
                                   @PathVariable Integer size) {
-        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCondition(employeeId, ContractStatusEnum.INVALID, page, size);
+        PageResponse<Contact> contactPageResponse = contactService.queryBusinessCondition(companyId, ContractStatusEnum.INVALID, page, size);
 
         PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
         return ResultUtil.success(HttpStatus.OK, pageResponse);
