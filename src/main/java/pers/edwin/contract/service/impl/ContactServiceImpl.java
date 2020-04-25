@@ -102,6 +102,14 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public PageResponse<Contact> queryPersonalCreate(Integer employeeId, Integer page, Integer size) {
+        Contact contact = Contact.builder()
+                .typeId(TypeEnum.PERSONAL_CONTRACT.getId())
+                .partyA(String.valueOf(employeeId)).build();
+        return queryPage(contact, page, size);
+    }
+
+    @Override
     public PageResponse<Contact> queryPersonalCreate(Integer employeeId, ContractStatusEnum status, Integer page, Integer size) {
         Contact contact = Contact.builder()
                 .status(status.name())
@@ -157,12 +165,25 @@ public class ContactServiceImpl implements ContactService {
         PageResponse<Contact> pageParryA = queryPage(Contact.builder()
                 .partyA(String.valueOf(companyId))
                 .typeId(TypeEnum.EMPLOYEE_CONTRACT.getId())
-                .status(ContractStatusEnum.CREATE.name())
                 .build(), page, size);
         PageResponse<Contact> pageParryB = queryPage(Contact.builder()
                 .partyA(String.valueOf(companyId))
                 .typeId(TypeEnum.BUSINESS_CONTRACT.getId())
-                .status(ContractStatusEnum.CREATE.name())
+                .build(), page, size);
+        return mergePage(pageParryA, pageParryB, page, size);
+    }
+
+    @Override
+    public PageResponse<Contact> queryBusinessCreate(Integer companyId, ContractStatusEnum status, Integer page, Integer size) {
+        PageResponse<Contact> pageParryA = queryPage(Contact.builder()
+                .partyA(String.valueOf(companyId))
+                .typeId(TypeEnum.EMPLOYEE_CONTRACT.getId())
+                .status(status.name())
+                .build(), page, size);
+        PageResponse<Contact> pageParryB = queryPage(Contact.builder()
+                .partyA(String.valueOf(companyId))
+                .typeId(TypeEnum.BUSINESS_CONTRACT.getId())
+                .status(status.name())
                 .build(), page, size);
         return mergePage(pageParryA, pageParryB, page, size);
     }

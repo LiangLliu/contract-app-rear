@@ -26,7 +26,7 @@ public interface ContactService {
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     List<Contact> queryAllByLimit(int offset, int limit);
@@ -57,6 +57,8 @@ public interface ContactService {
 
     PageResponse<Contact> queryPersonalAllPage(Integer employeeId, Integer page, Integer size);
 
+    PageResponse<Contact> queryPersonalCreate(Integer employeeId, Integer page, Integer size);
+
     PageResponse<Contact> queryPersonalCreate(Integer employeeId, ContractStatusEnum status, Integer page, Integer size);
 
     PageResponse<Contact> queryPersonalCondition(Integer employeeId, ContractStatusEnum status, Integer page, Integer size);
@@ -66,4 +68,6 @@ public interface ContactService {
     PageResponse<Contact> queryBusinessCondition(Integer companyId, ContractStatusEnum unsigned, Integer page, Integer size);
 
     PageResponse<Contact> queryBusinessCreate(Integer companyId, Integer page, Integer size);
+
+    PageResponse<Contact> queryBusinessCreate(Integer companyId, ContractStatusEnum status, Integer page, Integer size);
 }

@@ -59,6 +59,24 @@ public class BusinessController {
         return ResultUtil.success(HttpStatus.OK, pageResponse);
     }
 
+
+    /**
+     * 我创建的合同
+     *
+     * @return 评论列表
+     */
+    @GetMapping("/create/unsigned/{companyId}/{page}/{size}")
+    public ResponseEntity createByUnsigned(@PathVariable Integer companyId,
+                                           @PathVariable Integer page,
+                                           @PathVariable Integer size) {
+
+        PageResponse<Contact> contactPageResponse = contactService.queryBusinessCreate(companyId, ContractStatusEnum.UNSIGNED, page, size);
+
+        PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
+        return ResultUtil.success(HttpStatus.OK, pageResponse);
+    }
+
+
     /**
      * 待签的,只涉及商业合同
      */

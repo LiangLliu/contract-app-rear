@@ -54,7 +54,24 @@ public class PersonalController {
                                  @PathVariable Integer page,
                                  @PathVariable Integer size) {
 
-        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCreate(employeeId, ContractStatusEnum.CREATE, page, size);
+        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCreate(employeeId, page, size);
+
+        PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
+        return ResultUtil.success(HttpStatus.OK, pageResponse);
+    }
+
+
+    /**
+     * 我创建的合同，待他签
+     *
+     * @return 评论列表
+     */
+    @GetMapping("/create/unsigned/{employeeId}/{page}/{size}")
+    public ResponseEntity createByUnsigned(@PathVariable Integer employeeId,
+                                 @PathVariable Integer page,
+                                 @PathVariable Integer size) {
+
+        PageResponse<Contact> contactPageResponse = contactService.queryPersonalCreate(employeeId, ContractStatusEnum.UNSIGNED, page, size);
 
         PageResponse<ContractList> pageResponse = ContractList.from(contactPageResponse);
         return ResultUtil.success(HttpStatus.OK, pageResponse);
